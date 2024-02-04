@@ -6,46 +6,11 @@ from car_factory import CarFactory
 class TestCalliope(unittest.TestCase):
     def test_battery_should_be_serviced(self):
         today = datetime.today().date()
-        last_service_date = today.replace(year=today.year - 3)
+        last_service_date = today.replace(year=today.year - 4)
         current_mileage = 0
         last_service_mileage = 0
-        car = CarFactory.create_calliope(today, last_service_date, current_mileage, last_service_mileage)
-        self.assertTrue(car.engine.needs_service() or car.battery.needs_service())
-
-    def test_battery_should_not_be_serviced(self):
-        today = datetime.today().date()
-        last_service_date = today.replace(year=today.year - 1)
-        current_mileage = 0
-        last_service_mileage = 0
-
-        car = CarFactory.create_calliope(today, last_service_date, current_mileage, last_service_mileage)
-        self.assertFalse(car.engine.needs_service() or car.battery.needs_service())
-
-    def test_engine_should_be_serviced(self):
-        last_service_date = datetime.today().date()
-        current_mileage = 30001
-        last_service_mileage = 0
-
-        car = CarFactory.create_calliope(last_service_date, last_service_date, current_mileage, last_service_mileage)
-        self.assertTrue(car.engine.needs_service() or car.battery.needs_service())
-
-    def test_engine_should_not_be_serviced(self):
-        last_service_date = datetime.today().date()
-        current_mileage = 30000
-        last_service_mileage = 0
-
-        car = CarFactory.create_calliope(last_service_date, last_service_date, current_mileage, last_service_mileage)
-        self.assertFalse(car.engine.needs_service() or car.battery.needs_service())
-
-
-class TestGlissade(unittest.TestCase):
-    def test_battery_should_be_serviced(self):
-        today = datetime.today().date()
-        last_service_date = today.replace(year=today.year - 3)
-        current_mileage = 0
-        last_service_mileage = 0
-
-        car = CarFactory.create_glissade(today, last_service_date, current_mileage, last_service_mileage)
+        wear = [0,0,0,0]
+        car = CarFactory.create_calliope(today, last_service_date, current_mileage, last_service_mileage, wear)
         self.assertTrue(car.battery.needs_service())
 
     def test_battery_should_not_be_serviced(self):
@@ -53,31 +18,107 @@ class TestGlissade(unittest.TestCase):
         last_service_date = today.replace(year=today.year - 1)
         current_mileage = 0
         last_service_mileage = 0
+        wear = [0, 0, 0, 0]
+        car = CarFactory.create_calliope(today, last_service_date, current_mileage, last_service_mileage, wear)
+        self.assertFalse(car.battery.needs_service())
 
-        car = CarFactory.create_glissade(today, last_service_date, current_mileage, last_service_mileage)
+    def test_engine_should_be_serviced(self):
+        last_service_date = datetime.today().date()
+        current_mileage = 30001
+        last_service_mileage = 0
+        wear = [0, 0, 0, 0]
+        car = CarFactory.create_calliope(last_service_date, last_service_date, current_mileage, last_service_mileage, wear)
+        self.assertTrue(car.engine.needs_service())
+
+    def test_engine_should_not_be_serviced(self):
+        last_service_date = datetime.today().date()
+        current_mileage = 30000
+        last_service_mileage = 0
+        wear = [0, 0, 0, 0]
+        car = CarFactory.create_calliope(last_service_date, last_service_date, current_mileage, last_service_mileage, wear)
+        self.assertFalse(car.engine.needs_service())
+
+    def test_Tyres_should_be_serviced(self):
+        today = datetime.today().date()
+        last_service_date = today.replace(year=today.year - 4)
+        current_mileage = 0
+        last_service_mileage = 0
+        wear = [1, 1, 1, 0]
+        car = CarFactory.create_calliope(today, last_service_date, current_mileage, last_service_mileage, wear)
+        self.assertTrue(car.tyres.needs_service())
+
+    def test_Tyres_should_not_be_serviced(self):
+        today = datetime.today().date()
+        last_service_date = today.replace(year=today.year - 4)
+        current_mileage = 0
+        last_service_mileage = 0
+        wear = [0, 0, 0, 0]
+        car = CarFactory.create_calliope(today, last_service_date, current_mileage, last_service_mileage, wear)
+        self.assertFalse(car.tyres.needs_service())
+
+
+class TestGlissade(unittest.TestCase):
+    def test_battery_should_be_serviced(self):
+        today = datetime.today().date()
+        last_service_date = today.replace(year=today.year - 4)
+        current_mileage = 0
+        last_service_mileage = 0
+        wear = [0,0,0,0]
+
+        car = CarFactory.create_glissade(today, last_service_date, current_mileage, last_service_mileage, wear)
+        self.assertTrue(car.battery.needs_service())
+
+    def test_battery_should_not_be_serviced(self):
+        today = datetime.today().date()
+        last_service_date = today.replace(year=today.year - 1)
+        current_mileage = 0
+        last_service_mileage = 0
+        wear = [0, 0, 0, 0]
+
+        car = CarFactory.create_glissade(today, last_service_date, current_mileage, last_service_mileage, wear)
         self.assertFalse(car.battery.needs_service())
 
     def test_engine_should_be_serviced(self):
         last_service_date = datetime.today().date()
         current_mileage = 60001
         last_service_mileage = 0
+        wear = [0, 0, 0, 0]
 
-        car = CarFactory.create_glissade(last_service_date, last_service_date, current_mileage, last_service_mileage)
+        car = CarFactory.create_glissade(last_service_date, last_service_date, current_mileage, last_service_mileage, wear)
         self.assertTrue(car.engine.needs_service())
 
     def test_engine_should_not_be_serviced(self):
         last_service_date = datetime.today().date()
         current_mileage = 60000
         last_service_mileage = 0
+        wear = [0, 0, 0, 0]
 
-        car = CarFactory.create_glissade(last_service_date, last_service_date, current_mileage, last_service_mileage)
+        car = CarFactory.create_glissade(last_service_date, last_service_date, current_mileage, last_service_mileage, wear)
         self.assertFalse(car.engine.needs_service())
+
+    def test_tyers_should_be_serviced(self):
+        last_service_date = datetime.today().date()
+        current_mileage = 60000
+        last_service_mileage = 0
+        wear = [0, 0, 0, 0]
+
+        car = CarFactory.create_glissade(last_service_date, last_service_date, current_mileage, last_service_mileage, wear)
+        self.assertFalse(car.tyres.needs_service())
+    def test_tyers_should_not_be_serviced(self):
+        last_service_date = datetime.today().date()
+        current_mileage = 60000
+        last_service_mileage = 0
+        wear = [0, 0, 0, 0.9]
+
+        car = CarFactory.create_glissade(last_service_date, last_service_date, current_mileage, last_service_mileage, wear)
+        self.assertTrue(car.tyres.needs_service())
+
 
 
 class TestPalindrome(unittest.TestCase):
     def test_battery_should_be_serviced(self):
         today = datetime.today().date()
-        last_service_date = today.replace(year=today.year - 3)
+        last_service_date = today.replace(year=today.year - 4)
         warning_light_is_on = False
 
         car = CarFactory.create_palindrome(today, last_service_date, warning_light_is_on)
